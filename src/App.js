@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
+import Area from './components/Area';
+import ChartItem from './components/ChartItem';
 
 const getRandomNumber = () => {
   return Math.floor(Math.random() * 100 + 1)
@@ -50,6 +52,7 @@ function App() {
     data.forEach((item) => {
       item.value+=getRandomNumber()
     })
+    setBigBarData(findBigBarItem(data))
     setBarData(data)
   }
 
@@ -64,15 +67,15 @@ function App() {
       let rate= item.value/bigBarData
       rate = rate * (1000 - 40)
       const percent=(rate*100)/1040
-      console.log(percent)
+      return <ChartItem  key={item.id} backgroundColor={item.color} width={percent+"%"} text={item.title} count={item.value} top={index===0?10:(index*40)+20+'px'}   />
     }
 
   return (
     <>
-    Yarışan Grafikler
-    {barData.map((item) => {
-      renderBarItem(item)
-    })}
+    <div className='app-title'>Firmaların Müşteri Sayıları</div>
+    <Area data={barData}>
+    {barData.map((item, index) => renderBarItem(item,index) )}
+    </Area>
     </>
    
   );
